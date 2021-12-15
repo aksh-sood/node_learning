@@ -1,6 +1,7 @@
 const fs = require("fs");
 const http = require("http");
 const url = require("url");
+const slugify=require("slugify");
 // const replaceTemplate = require("./node_farm_module/replaceTemplate");
 const data = fs.readFileSync(
   "resource/complete-node-bootcamp/1-node-farm/starter/dev-data/data.json",
@@ -35,6 +36,12 @@ const tempCard = fs.readFileSync(
   "resource/complete-node-bootcamp/1-node-farm/starter/templates/card.html",
   "utf-8"
 );
+
+
+
+const slugs=productData.map(el=>slugify(el.productName,{lower:true}));
+
+console.log(slugs);
 
 const server = http.createServer((req, res) => {
   const {query,pathname}=url.parse(req.url,true);
