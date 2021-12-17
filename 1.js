@@ -1,7 +1,7 @@
 const fs = require("fs");
 const http = require("http");
 const url = require("url");
-const slugify=require("slugify");
+const slugify = require("slugify");
 // const replaceTemplate = require("./node_farm_module/replaceTemplate");
 const data = fs.readFileSync(
   "resource/complete-node-bootcamp/1-node-farm/starter/dev-data/data.json",
@@ -9,20 +9,20 @@ const data = fs.readFileSync(
 );
 const productData = JSON.parse(data);
 
-const replaceTemplate=(temp,product)=>{
-    let output=temp.replace(/{%PRODUCTNAME%}/g,product.productName);
-    output=output.replace(/{%IMAGE%}/g,product.image);
-    output=output.replace(/{%ID%}/g,product.id);
-    output=output.replace(/{%PRODUCTCOST%}/g,product.price);
-    output=output.replace(/{%PRODUCTNUTRI%}/g,product.nutrients);
-    output=output.replace(/{%PRODUCTQUANTITY%}/g,product.quantity);
-    output=output.replace(/{%PRODUCTCOUNTRY%}/g,product.from);
-    output=output.replace(/{%DESCRIPTION%}/g,product.description);
-    if(!product.organic){
-        output=output.replace(/{%NOT_ORGANIC%}/g,"not-organic");   
-    }
-    return output;
-}
+const replaceTemplate = (temp, product) => {
+  let output = temp.replace(/{%PRODUCTNAME%}/g, product.productName);
+  output = output.replace(/{%IMAGE%}/g, product.image);
+  output = output.replace(/{%ID%}/g, product.id);
+  output = output.replace(/{%PRODUCTCOST%}/g, product.price);
+  output = output.replace(/{%PRODUCTNUTRI%}/g, product.nutrients);
+  output = output.replace(/{%PRODUCTQUANTITY%}/g, product.quantity);
+  output = output.replace(/{%PRODUCTCOUNTRY%}/g, product.from);
+  output = output.replace(/{%DESCRIPTION%}/g, product.description);
+  if (!product.organic) {
+    output = output.replace(/{%NOT_ORGANIC%}/g, "not-organic");
+  }
+  return output;
+};
 
 const tempOverview = fs.readFileSync(
   "resource/complete-node-bootcamp/1-node-farm/starter/templates/overview.html",
@@ -37,22 +37,22 @@ const tempCard = fs.readFileSync(
   "utf-8"
 );
 
-
-
-const slugs=productData.map(el=>slugify(el.productName,{lower:true}));
+const slugs = productData.map((el) => slugify(el.productName, { lower: true }));
 
 console.log(slugs);
 
 const server = http.createServer((req, res) => {
-  const {query,pathname}=url.parse(req.url,true);
+  const { query, pathname } = url.parse(req.url, true);
   const requestUrl = url.parse(req.url).pathname;
   const pathName = req.url;
   res.on("error", (error) => console.log(error));
   try {
     switch (requestUrl) {
       case "/":
-        const cardsHtml= productData.map(el=>replaceTemplate(tempCard,el)).join('');
-        const output=tempOverview.replace("{%PRODUCT_CARDS%}",cardsHtml)
+        const cardsHtml = productData
+          .map((el) => replaceTemplate(tempCard, el))
+          .join("");
+        const output = tempOverview.replace("{%PRODUCT_CARDS%}", cardsHtml);
         res.writeHead(200, { "Content-Type": "text/html" });
 
         res.end(output);
@@ -64,10 +64,10 @@ const server = http.createServer((req, res) => {
         res.end(data);
         break;
       case "/product":
-          console.log(query);
-          res.writeHead(200,{ "Content-Type": "text/html"})
-          const product =productData[query.id];
-          const out=replaceTemplate(tempProduct,product);
+        console.log(query);
+        res.writeHead(200, { "Content-Type": "text/html" });
+        const product = productData[query.id];
+        const out = replaceTemplate(tempProduct, product);
         res.end(out);
         break;
       default:
@@ -80,6 +80,9 @@ const server = http.createServer((req, res) => {
   } catch (error) {
     console.log(error);
   }
+  // TODO:
+  // FIXME:
+  // BUG:
 
   // if(  pathName ==="/overview" || pathName ==="/"){
 
