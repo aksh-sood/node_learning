@@ -80,25 +80,6 @@ const server = http.createServer((req, res) => {
   } catch (error) {
     console.log(error);
   }
-  // TODO:
-  // FIXME:
-  // BUG:
-
-  // if(  pathName ==="/overview" || pathName ==="/"){
-
-  // }else if(pathName==="/product"){
-  //     res.end("this is the Product");
-  // }else if(pathName==="/api"){
-
-  //     res.writeHead(200,{"Content-Type":"application/json"});
-  //     res.end(data);
-  // }else{
-  //     res.writeHead(404,{
-  //         "Content-type":"text/html",
-  //         "my-own-header":"hello world"
-  //     });
-  //     res.end("Page not found");
-  // }
 });
 server.listen(8000, "127.0.0.1", () => {
   console.log("listening to request at 8000");
